@@ -8,7 +8,7 @@ You should just edit the source file at src/README.md - the one which stars with
 
 ## @@title
 
-<img src="img/cover.jpg" class="logo" />
+<img src="img/angularjs.png" />
 
 @@author @ [Avenue Code](http://www.avenuecode.com)
 
@@ -20,213 +20,363 @@ You should just edit the source file at src/README.md - the one which stars with
 
 ## Agenda
 
- - The template
-  - Installing
-  - Working
-  - Deploying
- - Your talk
-  - Organization
-  - Content requirements
-  - Communication requirements
-  - The DONT's
-  - Tips
-  - If you are recording
+ - Directives
+  - Custom directives
+ - Services x Factories x Providers
+ - URLs
+ - Filters
+ - Events
+  - Broadcast x Emit
+ - $watch, $digest, $apply
+ - Conclusion
+ - Challenge
 
 ----
-
-## Agenda
-
- - Contributing
- - Learn more
- - Conclusion
- - Assignment
-
----
 
 ## Prerequisites
 
-- Markdown
-- Reveal.js
-- Grunt
+- Intermediate Javascript
+- Design Patterns
+- AngularJS basics
 
 ---
 
-## The template
+## Directives
 
-1. The Avenue Code talk template is a responsive, web-based talk template.
-1. This template is based on [Reveal.JS](http://lab.hakim.se/reveal-js).
-1. All you need to do is to write your content in [Markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet).
-1. There are some [Grunt](http://gruntjs.com) jobs to automatize the build process.
-1. It has *automatic code highlighting*, guessing the programming language you used.
-1. Once it is described in *README.md*, the talk contents will also be available as the repository description which is a common format for tutorials.
+![Directives](img/directives.jpg "Directives!")
+
+- Independent web components
+- Commonly used for DOM manipulation
 
 ----
 
-## Setting up your repo
+## How it works
 
-1. Sign in on GitHub
-1. Fork the repository <https://github.com/acbr/talk-template>
-1. Rename it to match your talk name (ex: *talk-design-patterns*)
-1. Clone this repository
-1. Navigate to its folder on the terminal
+AngularJS:
 
-----
+1. Looks for directives (built-in & customs)
+2. Compiles using $compile()
+  - It keeps track and sorts directives by priority
+3. Links with created scope
+  - Registering listeners or Setting up $watcher
 
-## Building and running
-
-1. Install [Node.js](http://nodejs.org/)
-1. Install [Grunt](http://gruntjs.com/getting-started#installing-the-cli)
-1. On the repo folder, install the npm dependencies
-```sh
-$ npm install
-```
-1. Build it, serve it and monitor source files for changes
-```sh
-$ grunt
-```
-1. Open <http://localhost:8000> to view your talk
+After these steps 2-way data-binding is set.
 
 ----
 
-## Working
+## Useful directives
 
-1. Open up *config.json* and fill your talk data such as title, author, email, date and description.
-  - That is the *ONLY FILE* you should edit on the project root!
-1. Any further change you will do is inside the *src* folder, such as:
-  - *src/README.md* to write your talk content in *Markdown*
-  - *src/index.html* to modify the HTML
-1. Grunt will generate files on the project root as you change *src*.
-1. In order to separate slides horizontally, use 3 dashes (---).
-1. In order to separate slides vertically, use 4 dashes (----).
-1. In order to *call out attention*, put an asterisk around your text:
-```
-In order to *call out attention*, ...
-```
+- ng-repeat
+- ng-show
+- ng-class
+- ng-enabled
+- ng-switch
+- ng-hide
+- ng-href
+- ng-src
 
 ----
 
-## Deploying
+## Custom Directives
 
-1. Make sure your build is not breaking.
-  - You should see *Done, without errors.* in the terminal.
-1. *git add*, *git commit* and *git push* to *gh-pages* branch.
-1. You should see your talk in an address like:
-  - http://*your-github-username*.github.io/*your-repo-name*
-  - Ex: <http://acbr.github.io/talk-template>
+> If you end writing $(element) somewhere in your controller then it's an indication
+that you need a directive.
+
+----
+
+## Blueprint
+
+```javascript
+app.directive('directiveName', function (injectables) {
+  return {
+    restrict: 'A',
+    template: '<div></div>',
+    templateUrl: 'directive.html',
+    replace: false,
+    priority: 0,
+    transclude: false,
+    scope: false,
+    terminal: false,
+    require: false,
+    controller: function($scope, $element, $attrs, $transclude, otherInjectables) { ... },
+    compile: function compile(tElement, tAttrs, transclude) {
+      return {
+        pre: function preLink(scope, iElement, iAttrs, controller) { ... },
+        post: function postLink(scope, iElement, iAttrs, controller) { ... }
+      }
+    },
+    link: function postLink(scope, iElement, iAttrs) { ... }
+  };
+});
+```
 
 ---
 
-## Your talk
+## Services
 
- - Should last no more than 50 minutes, leave up to 10 minutes for questions.
- - Should not be too deep neither too superficial.
- - Give at least 3 reference links to be followed for further studies.
- - Give a challenge that would be solved using ideas that were covered on the talk.
- - It is ok to go a little bit far (forcing the attendee to do some research), but that should be optional.
+- Ready functions (No need of preprocessing)
+- Shared data through application
+- Expect a *constructor* function
+- Generate singleton objects
 
-----
+```javascript
+myApp.service('GreetService',  function(){
+  this.greet = function (name) {
+    return 'Hello ' + name;
+  };
+});
 
-## Organization
-
- - 1st slide: the cover, featuring your talk name, your name, the lecture date and AC logo.
- - 2nd slide: the agenda, in topics.
- - 3nd slide: the prerequisites of your talk.
- - From 4th slide on: your content
-  - When content from the same topic doesn't fit on a slide -> grow it *VERTICALLY* by adding a slide below (----).
-  - When you finish a topic and will start a different one -> grow it *HORIZONTALLY* by adding a slide to the right (---).
- - The 3 last slides: Conclusion, Learn more (with the reference links) and Challenge.
-
-----
-
-## Content requirements
-
-1. *BE CONSISTENT*. Master the subject and do not contradict yourself.
-1. *CATCH THE ATTENTION*. Let the audience know WHY they cannot live one more day without this technology.
-1. *BALANCE THEORY AND PRACTICE*. Your target is keeping the subject interesting for everybody.
-1. *BE CONCISE*. Don't overexplain in such way you could cause confusion to your attendees.
-1. *KEEP THE FOCUS*. Off-topic discussions are ok, but only if it doesn't disturb the natural flow of your content.
-1. *BE PREPARED*. If you are going to use examples or live coding, make sure you have them all prepared beforehand.
+function MyController(GreetService) {
+  GreetService.greet('World');
+}
+```
 
 ----
 
-## Communication requirements
+## Factories
 
-1. *COMMUNICATE WELL*. Be sharp on English, no bad words or slangs and use the best words for the audience.
-1. *BE A PRO*. Please watch some good screencasts in order to learn how to use your voice and conduct the talk.
-1. *BE POLITE*. Be respectful and avoid heavy criticism.
-1. *BE PROFESSIONAL*. Use jokes and humor with parsimony.
-1. *TRAIN* your full talk at least once before your talk.
+- Allow logic before object creation
+- Expect a function that factory will *invoke*
+- Controllers have single instances
 
-----
+```javascript
+myApp.factory('GreetService', function () {
+  var GreetClass = function(name) {
+    this.name = name;
+    this.greet = function () {
+      return 'Hello ' + this.name;
+    }
+  }
+  return GreetClass;
+});
+function MyController(GreetService) {
+  var world = new GreetService('World'),
+      angular = new GreetService('Angular');
 
-## The DONT's
-
-1. *DO NEVER SHOW PRIVATE CODE FROM THE CLIENT*. This is CRITICAL and can cause serious problems.
-1. *DON'T BE ARROGANT*. Be humble and don't focus the talk on yourself.
-1. *DON'T GENERALIZE*, specially stuff that you are not sure about.
-1. *DON'T MAKE UP DATA*. Base yourself on trustable references.
-1. *DON'T TALK LIKE A ROBOT*. Just be yourself, natural. Relax :)
-
-----
-
-## Tips
-
- - *ENJOY* your experience by creating the talk, because you will surely learn MUCH MORE than your attendees.
- - *BRING WATER* to drink while you present. You will certainly need it!
- - *BE OPEN* to receive questions and even criticism. You will learn a lot from them.
- - *ALWAYS* be polite when talking to your audience. This will always open doors for you.
- - People might come to you with questions and more complex cases after your talk. Consider it as a gift, it means you represent something good for them!
+  world.greet();
+  angular.greet();
+```
 
 ----
 
-## If you are recording
+## Providers
 
-- Make sure you use a professional microphone when available.
-- Don't do *drastic transitions* on your screen, as the recorded amount of frames per second is low.
-- Ask atendees to only make questions on the end - so future watchers will just get the real content without interruption.
-- Introduce yourself: "Hello everybody, my name is xxxx, I work for Avenue Code and today's talk will be about yyyyy". Finish it like: "That's it, thanks for watching.".
-- Problems with recording/connection? Always restart from the beginning of the slide. Don't try to restart from where it fails, its impossible to do a clean cut on the video after that.
+- Defined at configuration level
+- Runs *before injection* takes place
+
+```javascript
+myApp.provider('Greet', function () {
+  var hello = true;
+  this.sayHello = function(sayHello){
+    sayHello = sayHello;
+  };
+
+  var HelloClass = function(name) {
+   this.name = name;
+   this.greet = function () { return 'Hello ' + this.name; }
+  };
+
+  var ByeClass = function(name) {
+   this.name = name;
+   this.greet = function () { return 'Bye ' + this.name; }
+  };
+
+  this.$get = function() {
+    return sayHello ? HelloClass : ByeClass;
+  };
+});
+
+myApp.config(function(Greet){
+  Greet.sayHello(false);
+});
+
+function MyController(Greet) {
+  var world = new Greet('World'),
+      angular = new Greet('Angular');
+  world.greet();
+  angular.greet();
+}
+```
+
+----
+
+## Worth mentioning
+
+There are also *constant* and *value* which work similar,
+but constant is defined before configuration level.
+
+```javascript
+myApp.value('lang','PT-BR');
+function MyController(lang) {
+  ...
+};
+
+myApp.constant('PUBLIC_API_TOKEN','1QAZ2WSX3EDC');
+myApp.config(function(PUBLIC_API_TOKEN){
+  ...
+});
+```
 
 ---
 
-## Contributing
+## URLs - Routing
 
-Should you wish to contribute, please be welcome to!
+```javascript
+myApp .config(['$routeProvider', function($routeProvider) {
+  $routeProvider.
+    when('/list', {
+      templateUrl: 'views/list.html',
+      controller: 'ListController'
+    }).
+    when('/add', {
+      templateUrl: 'views/add.html',
+      controller: 'AddController'
+    }).
+    otherwise({
+      redirectTo: '/list'
+    });
+  }]);
+```
 
-1. Fork the repository <https://github.com/acbr/talk-template>
-1. Create a feature branch for your contribution
-```sh
-git checkout -b my-new-feature
+----
+
+## URLs - Controlling
+
+Angular provides a *$location* service to handle URLs
+For instance, for http://localhost:9000/#/todo?a=b
+
+```javascript
+function MyController($location) {
+  $location.path(); // /todo
+  $location.url(); // /todo?a=b
+  $location.search(); // Object { a="b"}
+  $location.search().a; // b
+  $location.absUrl(); // http://localhost:9000/#/todo?a=b
+  $location.port(); // 9000
+}
 ```
-1. Commit your changes
-```sh
-git commit -am 'Add some feature'
-```
-1. Push to the branch
-```sh
-git push origin my-new-feature
-```
-1. Create a Pull Request
+
+Tip: some of these functions (like url, search) are also setters.
+
+----
+
+## URLs - Eventing
+
+- $locationChangeStart
+  - Broadcasts before URL actually changes
+- $locationChangeSuccess
+  - Broadcasts right after URL changes
+
+> Usage example: handling permissions
+
+---
+
+## Filters
+
+- Most often you will need to filter by a single property
+   - ```html
+      Search by name: <input type="text" ng-model="search.name">
+      <div ng-repeat="product in products | filter:search">
+        ...
+     ```
+- When a complex filter is needed, custom filters take place
+  - ```javascript
+      myApp.filter('ageFilter', function() {
+        return function(player) {
+          return (player.age > MIN_AGE && player.age < MAX_AGE);
+        };
+      });
+    ```
+
+---
+
+## Events
+
+Whenever an event which affects other components takes place
+the best way to set this behavior is through events.
+
+- ```javascript
+    function MyCtrl = function($scope) {
+      $scope.$on('logout', function(args) {
+        // redirects user to /index
+      });
+    }
+  ```
+- $scope.emit('logout')
+  - Communicate event from child to parent
+- $scope.broadcast('logout')
+  - Communicate event from parent to child
+
+---
+
+## $watch
+
+- $watch can watch any value and trigger a function when it's changed
+  - ```javascript
+      // Will watch $scope.name
+      $scope.$watch('name', function(newVal, oldVal) {
+        console.log(newVal, oldVal);
+      });
+    ```
+
+----
+
+## $digest, $apply
+
+- $digest loops through all thee *watchers on the scope it was called and
+also on children scope*
+  - It evaluates if any of them has changed and execute bound handlers
+- $apply is a wrapper around $digest that evaluates expression prior to calling $digest
+  - Often used when external libraries outside of 'Angular World' are used
+  - ```javascript
+      $scope.$apply(function(){
+        $scope.name = 'test';
+      });
+    ```
 
 ---
 
 ## Conclusion
 
-- This talk template rocks!
-- Your life should be easier now.
+- AngularJS provides different ways of solving the same problem. It's up to us
+decide which way fits better on system's architecture
+- AngularJS can work well of other libraries but it will need some handling in
+order to work as expected
 
 ---
 
-## Learn more
+## Reference
 
-1. [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
-1. [Reveal.JS](https://github.com/hakimel/reveal.js)
-1. [Grunt](http://gruntjs.com)
+- http://www.benlesh.com/2013/08/angularjs-watch-digest-and-apply-oh-my.html
+- http://trochette.github.io/Angular-Design-Patterns-Best-Practices
+- http://www.yearofmoo.com/2012/10/more-angularjs-magic-to-supercharge-your-webapp.html
+- http://amitgharat.wordpress.com/2013/06/08/the-hitchhikers-guide-to-the-directive/
+- http://elikirk.com/2013/07/22/angularjs-communication-between-controllers/
+- http://angular-tips.com/blog/2013/08/watch-how-the-apply-runs-a-digest/
+- http://docs.angularjs.org/guide
 
 ---
 
 ## Challenge
 
-1. Make your awesome talk based on this template.
-1. Push it to a gh-pages branch on your GitHub account.
-1. Share the URL with the world!
+- Create a directive which renders user information
+- HTML template should render (dynamically) a table with each property and value
+  - ```html
+      <userinfo user='myUser'></userinfo>
+    ```
+    generates
+    ```
+      | property   | value         |
+      | -----------| --------------|
+      | first_name | john          |
+      | email      | john@email.com|
+    ```
+
+
+*Submit the code on your Github account*
+
+---
+
+## Thank you!
+
+ Questions?

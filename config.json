@@ -1,7 +1,7 @@
 {
-  "title": "Talk template",
-  "description": "My awesome talk description",
-  "author": "Tiago Garcia",
-  "email": "tgarcia@avenuecode.com",
-  "date": "Feb 11th, 2014"
+  "title": "AngularJS - Part 2",
+  "description": "A deeper look into AngularJS architecture and components",
+  "author": "Rafael Guedes",
+  "email": "rguedes@avenuecode.com",
+  "date": "Mar 27th, 2014"
 }
