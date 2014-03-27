@@ -49,19 +49,11 @@ Mar 27th, 2014
 - Commonly used for DOM manipulation
 
 ----
-<<<<<<< HEAD
 
 ## How it works
 
 AngularJS:
 
-=======
-
-## How it works
-
-AngularJS:
-
->>>>>>> d99cca07a2116df58f5eab9713398f51c3e44c55
 1. Looks for directives (built-in & customs)
 2. Compiles using $compile()
   - It keeps track and sorts directives by priority
@@ -86,59 +78,6 @@ After these steps 2-way data-binding is set.
 ----
 
 ## Custom Directives
-<<<<<<< HEAD
-
-> If you end writing $(element) somewhere in your controller then it's an indication
-that you need a directive.
-
-----
-
-## Blueprint
-
-```javascript
-app.directive('directiveName', function (injectables) {
-  return {
-    restrict: 'A',
-    template: '<div></div>',
-    templateUrl: 'directive.html',
-    replace: false,
-    priority: 0,
-    transclude: false,
-    scope: false,
-    terminal: false,
-    require: false,
-    controller: function($scope, $element, $attrs, $transclude, otherInjectables) { ... },
-    compile: function compile(tElement, tAttrs, transclude) {
-      return {
-        pre: function preLink(scope, iElement, iAttrs, controller) { ... },
-        post: function postLink(scope, iElement, iAttrs, controller) { ... }
-      }
-    },
-    link: function postLink(scope, iElement, iAttrs) { ... }
-  };
-});
-```
-
----
-
-## Services
-
-- Ready functions (No need of preprocessing)
-- Shared data through application
-- Expect a *constructor* function
-- Generate singleton objects
-
-```javascript
-myApp.service('GreetService',  function(){
-  this.greet = function (name) {
-    return 'Hello ' + name;
-  };
-});
-
-function MyController(GreetService) {
-  GreetService.greet('World');
-}
-=======
 
 > If you end writing $(element) somewhere in your controller then it's an indication
 that you need a directive.
@@ -194,34 +133,6 @@ function MyController(GreetService) {
 
 ----
 
-## Factories
-
-- Allow logic before object creation
-- Expect a function that factory will *invoke*
-- Controllers have single instances
-
-```javascript
-myApp.factory('GreetService', function () {
-  var GreetClass = function(name) {
-    this.name = name;
-    this.greet = function () {
-      return 'Hello ' + this.name;
-    }
-  }
-  return GreetClass;
-});
-function MyController(GreetService) {
-  var world = new GreetService('World'),
-      angular = new GreetService('Angular');
-
-  world.greet();
-  angular.greet();
->>>>>>> d99cca07a2116df58f5eab9713398f51c3e44c55
-```
-
-----
-
-<<<<<<< HEAD
 ## Factories
 
 - Allow logic before object creation
@@ -285,45 +196,6 @@ function MyController(Greet) {
   angular.greet();
 }
 ```
-=======
-## Providers
-
-- Defined at configuration level
-- Runs *before injection* takes place
-
-```javascript
-myApp.provider('Greet', function () {
-  var hello = true;
-  this.sayHello = function(sayHello){
-    sayHello = sayHello;
-  };
-
-  var HelloClass = function(name) {
-   this.name = name;
-   this.greet = function () { return 'Hello ' + this.name; }
-  };
-
-  var ByeClass = function(name) {
-   this.name = name;
-   this.greet = function () { return 'Bye ' + this.name; }
-  };
-
-  this.$get = function() {
-    return sayHello ? HelloClass : ByeClass;
-  };
-});
-
-myApp.config(function(Greet){
-  Greet.sayHello(false);
-});
-
-function MyController(Greet) {
-  var world = new Greet('World'),
-      angular = new Greet('Angular');
-  world.greet();
-  angular.greet();
-}
-```
 
 ----
 
@@ -337,49 +209,7 @@ myApp.value('lang','PT-BR');
 function MyController(lang) {
   ...
 };
->>>>>>> d99cca07a2116df58f5eab9713398f51c3e44c55
 
-myApp.constant('PUBLIC_API_TOKEN','1QAZ2WSX3EDC');
-myApp.config(function(PUBLIC_API_TOKEN){
-  ...
-});
-```
-
-<<<<<<< HEAD
-## Worth mentioning
-
-There are also *constant* and *value* which work similar,
-but constant is defined before configuration level.
-=======
----
-
-## URLs - Routing
-
-```javascript
-myApp .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.
-    when('/list', {
-      templateUrl: 'views/list.html',
-      controller: 'ListController'
-    }).
-    when('/add', {
-      templateUrl: 'views/add.html',
-      controller: 'AddController'
-    }).
-    otherwise({
-      redirectTo: '/list'
-    });
-  }]);
-```
->>>>>>> d99cca07a2116df58f5eab9713398f51c3e44c55
-
-```javascript
-myApp.value('lang','PT-BR');
-function MyController(lang) {
-  ...
-};
-
-<<<<<<< HEAD
 myApp.constant('PUBLIC_API_TOKEN','1QAZ2WSX3EDC');
 myApp.config(function(PUBLIC_API_TOKEN){
   ...
@@ -414,13 +244,6 @@ myApp .config(['$routeProvider', function($routeProvider) {
 Angular provides a *$location* service to handle URLs
 For instance, for http://localhost:9000/#/todo?a=b
 
-=======
-## URLs - Controlling
-
-Angular provides a *$location* service to handle URLs
-For instance, for http://localhost:9000/#/todo?a=b
-
->>>>>>> d99cca07a2116df58f5eab9713398f51c3e44c55
 ```javascript
 function MyController($location) {
   $location.path(); // /todo
@@ -444,7 +267,6 @@ Tip: some of these functions (like url, search) are also setters.
   - Broadcasts right after URL changes
 
 > Usage example: handling permissions
-<<<<<<< HEAD
 
 ---
 
@@ -467,30 +289,6 @@ Tip: some of these functions (like url, search) are also setters.
 
 ---
 
-=======
-
----
-
-## Filters
-
-- Most often you will need to filter by a single property
-   - ```html
-      Search by name: <input type="text" ng-model="search.name">
-      <div ng-repeat="product in products | filter:search">
-        ...
-     ```
-- When a complex filter is needed, custom filters take place
-  - ```javascript
-      myApp.filter('ageFilter', function() {
-        return function(player) {
-          return (player.age > MIN_AGE && player.age < MAX_AGE);
-        };
-      });
-    ```
-
----
-
->>>>>>> d99cca07a2116df58f5eab9713398f51c3e44c55
 ## Events
 
 Whenever an event which affects other components takes place
@@ -548,7 +346,6 @@ order to work as expected
 
 ## Reference
 
-<<<<<<< HEAD
 - [AngularJS: $watch, $digest and $apply](http://www.benlesh.com/2013/08/angularjs-watch-digest-and-apply-oh-my.html)
 - [Angular.js: Advanced Design Patterns and Best Practices](http://trochette.github.io/Angular-Design-Patterns-Best-Practices)
 - [More AngularJS Magic to Supercharge your Webapp](http://www.yearofmoo.com/2012/10/more-angularjs-magic-to-supercharge-your-webapp.html)
@@ -556,15 +353,6 @@ order to work as expected
 - [AngularJS: Communication Between Controllers ](http://elikirk.com/2013/07/22/angularjs-communication-between-controllers/)
 - [$watch How the $apply Runs a $digest](http://angular-tips.com/blog/2013/08/watch-how-the-apply-runs-a-digest/)
 - [AngularJS: Developer Guider](http://docs.angularjs.org/guide)
-=======
-- http://www.benlesh.com/2013/08/angularjs-watch-digest-and-apply-oh-my.html
-- http://trochette.github.io/Angular-Design-Patterns-Best-Practices
-- http://www.yearofmoo.com/2012/10/more-angularjs-magic-to-supercharge-your-webapp.html
-- http://amitgharat.wordpress.com/2013/06/08/the-hitchhikers-guide-to-the-directive/
-- http://elikirk.com/2013/07/22/angularjs-communication-between-controllers/
-- http://angular-tips.com/blog/2013/08/watch-how-the-apply-runs-a-digest/
-- http://docs.angularjs.org/guide
->>>>>>> d99cca07a2116df58f5eab9713398f51c3e44c55
 
 ---
 
